@@ -24,3 +24,5 @@ settings_module = 'azure_project.deployment' if 'WEBSITE_HOSTNAME' in os.environ
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', settings_module)
 
 application = get_wsgi_application()
+
+app=application
