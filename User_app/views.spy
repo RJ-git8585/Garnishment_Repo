@@ -1,0 +1,68 @@
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.contrib.auth.models import User, auth
+from django.http import JsonResponse
+
+# Create your views here.
+
+
+def login(request):
+    response_data = {
+            "message": "Data retrieved successfully!",
+            "data": "ritik"  # Your processed data
+        }
+    if request.method== 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+
+        user = auth.authenticate(username=username,password=password)
+
+        if user is not None:
+            auth.login(request, user)
+            return JsonResponse(response_data)
+            #return redirect("/user/login/")
+        else:
+            messages.info(request,'invalid credentials')    
+            #return redirect('login')
+            return JsonResponse(response_data)
+
+    else:
+        #return render(request,'login.html')
+        return JsonResponse(response_data)    
+
+def register(request):
+
+    if request.method == 'POST':
+        first_name = request.POST['first_name']
+        last_name = request.POST['last_name']
+        username = request.POST['username']
+        password1 = request.POST['password1']
+        password2 = request.POST['password2']
+        email = request.POST['email']
+
+        if password1==password2:
+            if User.objects.filter(username=username).exists():
+                messages.info(request,'Username Taken')
+                return redirect('register')
+            elif User.objects.filter(email=email).exists():
+                messages.info(request,'Email Taken')
+                return redirect('register')
+            else:   
+                user = User.objects.create_user(username=username, password=password1, email=email,first_name=first_name,last_name=last_name)
+                user.save()
+                print('user created')
+                return redirect('login')
+
+        else:
+            messages.info(request,'password not matching..')    
+            return redirect('register')
+        return redirect('dashboard')
+        
+    else:
+        return render(request,'register.html')
+
+
+
+def dashboard(request):
+    auth.logout(request)
+    return redirect('dashboard')       
