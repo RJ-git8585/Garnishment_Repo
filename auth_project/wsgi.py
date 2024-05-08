@@ -17,7 +17,7 @@ application = get_wsgi_application()
 """
 
 import os
-from django.core.wsgi import get_wsgi_application
+from django.core.wsgi import get_wsgi_application # type: ignore
 
 settings_module = 'azure_project.deployment' if 'WEBSITE_HOSTNAME' in os.environ else 'azure_project.settings'
 
