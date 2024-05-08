@@ -55,5 +55,3 @@ local_settings.py
 db.sqlite3
 db.sqlite3-journal
 
-# PEP 582; used by e.g. githuom/David-OConnor/pyflow
-__pypackages__/
